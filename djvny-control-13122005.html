@@ -2,196 +2,102 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DJ VNY Admin Panel</title>
-
+<title>DJ VNY Master Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #0f0f0f;
-  color: white;
+  font-family: Poppins;
+  background:#111;
+  color:white;
+  padding:40px;
 }
-
-.container {
-  max-width: 800px;
-  margin: 60px auto;
-  background: #1a1a1a;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(255,0,85,0.2);
+input, textarea, button {
+  width:100%;
+  margin:8px 0;
+  padding:10px;
 }
-
-h1, h2 {
-  text-align: center;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  background: #111;
-  border: 1px solid #333;
-  color: white;
-  border-radius: 6px;
-}
-
 button {
-  padding: 10px 20px;
-  background: linear-gradient(90deg,#ff0055,#9900ff);
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
+  background:#ff0055;
+  color:white;
+  border:none;
 }
-
-button:hover {
-  opacity: 0.9;
-}
-
-.track-item {
-  background: #111;
-  padding: 15px;
-  margin-top: 15px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.delete-btn {
-  background: red;
-}
-
-.hidden {
-  display: none;
+.section {
+  background:#1a1a1a;
+  padding:20px;
+  margin-bottom:20px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="loginBox">
-  <h1>DJ VNY Admin Login</h1>
-  <input type="password" id="password" placeholder="Enter Admin Password">
-  <button onclick="login()">Login</button>
+<h1>DJ VNY Website Control Panel</h1>
+
+<div class="section">
+<h2>Basic Settings</h2>
+<input id="logo" placeholder="Website Logo Text">
+<input id="heroTitle" placeholder="Hero Title">
+<input id="heroSubtitle" placeholder="Hero Subtitle">
+<input id="heroImage" placeholder="Hero Background Image URL">
+<input id="primaryColor" placeholder="Primary Color (e.g. #ff0055)">
+<input id="youtube" placeholder="YouTube Link">
+<input id="spotify" placeholder="Spotify Link">
+<textarea id="about" placeholder="About Text"></textarea>
+<input id="footer" placeholder="Footer Text">
+<button onclick="saveSettings()">Save Website Settings</button>
 </div>
 
-<div class="container hidden" id="adminPanel">
-
-  <h1>Admin Dashboard</h1>
-
-  <h2>Artist Bio</h2>
-  <textarea id="bioText" rows="4"></textarea>
-  <button onclick="saveBio()">Save Bio</button>
-
-  <hr style="margin:40px 0; border-color:#333;">
-
-  <h2>Add New Track</h2>
-  <input type="text" id="trackTitle" placeholder="Track Title">
-  <input type="text" id="youtubeLink" placeholder="YouTube Video Link">
-  <input type="text" id="mp3Link" placeholder="MP3 Download Link">
-  <button onclick="addTrack()">Add Track</button>
-
-  <hr style="margin:40px 0; border-color:#333;">
-
-  <h2>Manage Tracks</h2>
-  <div id="trackList"></div>
-
+<div class="section">
+<h2>Add Track</h2>
+<input id="trackTitle" placeholder="Track Title">
+<input id="youtubeLink" placeholder="YouTube Link">
+<input id="mp3Link" placeholder="MP3 Link">
+<button onclick="addTrack()">Add Track</button>
 </div>
 
 <script>
-const ADMIN_PASSWORD = "djvny123"; // change this
+const PASSWORD = "djvny123";
 
-function login() {
-  const pass = document.getElementById("password").value;
-  if (pass === ADMIN_PASSWORD) {
-    document.getElementById("loginBox").classList.add("hidden");
-    document.getElementById("adminPanel").classList.remove("hidden");
-    loadData();
-  } else {
-    alert("Wrong Password");
-  }
+if(prompt("Enter Admin Password") !== PASSWORD){
+  document.body.innerHTML = "Access Denied";
 }
 
-function loadData() {
-  const bio = localStorage.getItem("bio") || "";
-  document.getElementById("bioText").value = bio;
+function saveSettings(){
+  const settings = {
+    logo: logo.value,
+    heroTitle: heroTitle.value,
+    heroSubtitle: heroSubtitle.value,
+    heroImage: heroImage.value,
+    primaryColor: primaryColor.value,
+    youtube: youtube.value,
+    spotify: spotify.value,
+    about: about.value,
+    footer: footer.value
+  };
 
-  const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-  const list = document.getElementById("trackList");
-  list.innerHTML = "";
-
-  tracks.forEach((track, index) => {
-    const div = document.createElement("div");
-    div.className = "track-item";
-    div.innerHTML = `
-      <div>
-        <strong>${track.title}</strong>
-      </div>
-      <button class="delete-btn" onclick="deleteTrack(${index})">Delete</button>
-    `;
-    list.appendChild(div);
-  });
+  localStorage.setItem("siteSettings", JSON.stringify(settings));
+  alert("Website Updated!");
 }
 
-function saveBio() {
-  const bio = document.getElementById("bioText").value;
-  localStorage.setItem("bio", bio);
-  alert("Bio Updated!");
-}
-
-function extractVideoID(url) {
-  const regExp = /(?:youtube\.com\/.*v=|youtu\.be\/)([^&\n?#]+)/;
-  const match = url.match(regExp);
+function extractID(url){
+  const reg = /(?:youtube\.com\/.*v=|youtu\.be\/)([^&]+)/;
+  const match = url.match(reg);
   return match ? match[1] : null;
 }
 
-function addTrack() {
-  const title = document.getElementById("trackTitle").value;
-  const youtubeLink = document.getElementById("youtubeLink").value;
-  const mp3 = document.getElementById("mp3Link").value;
-
-  if (!title || !youtubeLink || !mp3) {
-    alert("All fields are required");
-    return;
-  }
-
-  const videoId = extractVideoID(youtubeLink);
-
-  if (!videoId) {
-    alert("Invalid YouTube Link");
-    return;
-  }
-
-  const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+function addTrack(){
+  const videoId = extractID(youtubeLink.value);
+  if(!videoId) return alert("Invalid YouTube Link");
 
   const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-
   tracks.push({
-    title: title,
-    thumbnail: thumbnail,
-    mp3: mp3
+    title: trackTitle.value,
+    thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+    mp3: mp3Link.value
   });
 
   localStorage.setItem("tracks", JSON.stringify(tracks));
-
-  document.getElementById("trackTitle").value = "";
-  document.getElementById("youtubeLink").value = "";
-  document.getElementById("mp3Link").value = "";
-
-  loadData();
-  alert("Track Added Successfully!");
-}
-
-function deleteTrack(index) {
-  const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-  tracks.splice(index, 1);
-  localStorage.setItem("tracks", JSON.stringify(tracks));
-  loadData();
+  alert("Track Added!");
 }
 </script>
 
