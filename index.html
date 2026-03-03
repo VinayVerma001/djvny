@@ -21,7 +21,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 8%;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.9);
   position: fixed;
   width: 100%;
   z-index: 1000;
@@ -30,6 +30,7 @@ body {
 .logo {
   font-weight: 700;
   font-size: 20px;
+  letter-spacing: 2px;
 }
 
 .navbar ul {
@@ -41,6 +42,7 @@ body {
 .navbar a {
   color: white;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .navbar a:hover {
@@ -57,12 +59,19 @@ body {
 }
 
 .hero-overlay {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.65);
   padding: 40px;
+  border-radius: 10px;
 }
 
 .hero h1 {
   font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
 .section {
@@ -79,6 +88,7 @@ body {
   justify-content: center;
   gap: 30px;
   flex-wrap: wrap;
+  margin-top: 40px;
 }
 
 .card {
@@ -86,11 +96,13 @@ body {
   padding: 25px;
   border-radius: 10px;
   width: 260px;
-  transition: 0.3s;
+  transition: 0.3s ease;
+  box-shadow: 0 0 15px rgba(255,0,85,0.1);
 }
 
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(255,0,85,0.3);
 }
 
 .btn {
@@ -101,6 +113,7 @@ body {
   margin-top: 15px;
   background: #ff0055;
   color: white;
+  font-weight: 500;
 }
 
 .btn:hover {
@@ -111,21 +124,13 @@ iframe {
   width: 80%;
   height: 450px;
   border-radius: 10px;
+  margin-top: 30px;
 }
 
 footer {
   padding: 30px;
   text-align: center;
   background: black;
-}
-
-.admin-link {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #ff0055;
-  padding: 10px 15px;
-  border-radius: 50px;
   font-size: 14px;
 }
 </style>
@@ -158,7 +163,8 @@ footer {
 <section id="about" class="section">
   <h2>About DJ VNY</h2>
   <p id="about-text">
-    Loading artist bio...
+    DJ VNY is a passionate remix artist creating high-energy mashups,
+    party mixes, and electrifying DJ edits for music lovers worldwide.
   </p>
 </section>
 
@@ -179,16 +185,13 @@ footer {
   <p>© 2026 DJ VNY. All Rights Reserved.</p>
 </footer>
 
-<!-- Floating Admin Button -->
-<a href="admin.html" class="admin-link">Admin</a>
-
-<!-- SCRIPT TO LOAD DATA FROM ADMIN PANEL -->
+<!-- SCRIPT TO LOAD ADMIN DATA -->
 <script>
 const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 const container = document.getElementById("track-container");
 
 if (tracks.length === 0) {
-  container.innerHTML = "<p>No tracks added yet.</p>";
+  container.innerHTML = "<p>No tracks available right now. Check back soon!</p>";
 } else {
   tracks.forEach(track => {
     const card = document.createElement("div");
