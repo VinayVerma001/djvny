@@ -1,91 +1,108 @@
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0a0a0a;
-    color: #fff;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0f0f0f;
+  color: white;
 }
 
-header.hero-section {
-    text-align: center;
-    padding: 100px 20px;
-    background: linear-gradient(135deg, #ff0055, #9900ff);
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 8%;
+  background: rgba(0,0,0,0.7);
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
 }
 
-header.hero-section h1 {
-    font-size: 3rem;
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
 }
 
-header.hero-section p {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar a:hover {
+  color: #ff0055;
+}
+
+.hero {
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.overlay {
+  background: rgba(0,0,0,0.6);
+  padding: 40px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+}
+
+.section {
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.section.dark {
+  background: #1a1a1a;
+}
+
+.video-container iframe {
+  width: 80%;
+  height: 450px;
+  border-radius: 10px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  width: 250px;
 }
 
 .btn {
-    padding: 12px 25px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin: 10px;
-    font-weight: 500;
-    transition: 0.3s ease;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 15px;
 }
 
-.primary-btn {
-    background: #ff0055;
-    color: #fff;
+.primary {
+  background: #ff0055;
+  color: white;
 }
 
-.secondary-btn {
-    background: #222;
-    color: #fff;
+.secondary {
+  background: white;
+  color: black;
 }
 
-.primary-btn:hover {
-    background: #ff3388;
-}
-
-.secondary-btn:hover {
-    background: #444;
-}
-
-.social-section,
-.video-section,
-.downloads-section {
-    text-align: center;
-    padding: 50px 20px;
-}
-
-.social-icons a {
-    margin: 0 10px;
-    color: #9a9cff;
-    text-decoration: none;
-    font-size: 1.2rem;
-}
-
-.track-list {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.track {
-    border: 1px solid #444;
-    padding: 20px;
-    border-radius: 8px;
-    width: 200px;
-}
-
-.download-btn {
-    background: #9900ff;
-    color: white;
-}
-
-.download-btn:hover {
-    background: #bb33ff;
+.primary:hover {
+  background: #ff3377;
 }
 
 footer {
-    padding: 20px;
-    background: #111;
-    font-size: 0.9rem;
+  padding: 30px;
+  text-align: center;
+  background: #000;
 }
