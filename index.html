@@ -6,139 +6,11 @@
 <title>DJ VNY | Official Website</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-<style>
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #0f0f0f;
-  color: white;
-  scroll-behavior: smooth;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 8%;
-  background: rgba(0,0,0,0.9);
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
-}
-
-.logo {
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 2px;
-}
-
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-}
-
-.navbar a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.navbar a:hover {
-  color: #ff0055;
-}
-
-.hero {
-  height: 100vh;
-  background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4') center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.hero-overlay {
-  background: rgba(0,0,0,0.65);
-  padding: 40px;
-  border-radius: 10px;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.section {
-  padding: 100px 10%;
-  text-align: center;
-}
-
-.dark {
-  background: #1a1a1a;
-}
-
-.cards {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  margin-top: 40px;
-}
-
-.card {
-  background: #1a1a1a;
-  padding: 25px;
-  border-radius: 10px;
-  width: 260px;
-  transition: 0.3s ease;
-  box-shadow: 0 0 15px rgba(255,0,85,0.1);
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px rgba(255,0,85,0.3);
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  margin-top: 15px;
-  background: #ff0055;
-  color: white;
-  font-weight: 500;
-}
-
-.btn:hover {
-  background: #ff3377;
-}
-
-iframe {
-  width: 80%;
-  height: 450px;
-  border-radius: 10px;
-  margin-top: 30px;
-}
-
-footer {
-  padding: 30px;
-  text-align: center;
-  background: black;
-  font-size: 14px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">DJ VNY</div>
   <ul>
@@ -150,32 +22,25 @@ footer {
   </ul>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
   <div class="hero-overlay">
     <h1>Feel The Beat</h1>
-    <p>Official Website of DJ VNY — Remixes | Mashups | Party Tracks</p>
-    <a href="#downloads" class="btn">Download Latest Tracks</a>
+    <p>Official Website of DJ VNY</p>
+    <a href="#downloads" class="btn">Download Tracks</a>
   </div>
 </header>
 
-<!-- ABOUT -->
 <section id="about" class="section">
   <h2>About DJ VNY</h2>
-  <p id="about-text">
-    DJ VNY is a passionate remix artist creating high-energy mashups,
-    party mixes, and electrifying DJ edits for music lovers worldwide.
-  </p>
+  <p id="about-text"></p>
 </section>
 
-<!-- MUSIC -->
 <section id="music" class="section dark">
   <h2>Latest Video</h2>
   <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=DJ_VNY"
   frameborder="0" allowfullscreen></iframe>
 </section>
 
-<!-- DOWNLOADS -->
 <section id="downloads" class="section">
   <h2>MP3 Downloads</h2>
   <div class="cards" id="track-container"></div>
@@ -185,20 +50,19 @@ footer {
   <p>© 2026 DJ VNY. All Rights Reserved.</p>
 </footer>
 
-<!-- SCRIPT TO LOAD ADMIN DATA -->
 <script>
 const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 const container = document.getElementById("track-container");
 
 if (tracks.length === 0) {
-  container.innerHTML = "<p>No tracks available right now. Check back soon!</p>";
+  container.innerHTML = "<p>No tracks available.</p>";
 } else {
   tracks.forEach(track => {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
+      <img src="${track.thumbnail}" class="thumb">
       <h3>${track.title}</h3>
-      <p>${track.description}</p>
       <a href="${track.mp3}" class="btn" download>Download</a>
     `;
     container.appendChild(card);
@@ -206,9 +70,7 @@ if (tracks.length === 0) {
 }
 
 const bio = localStorage.getItem("bio");
-if (bio) {
-  document.getElementById("about-text").innerText = bio;
-}
+if (bio) document.getElementById("about-text").innerText = bio;
 </script>
 
 </body>
