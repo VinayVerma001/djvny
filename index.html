@@ -3,10 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DJ VNY | Official Artist Website</title>
+<title>DJ VNY | Official Website</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0f0f0f;
+  color: white;
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 8%;
+  background: rgba(0,0,0,0.85);
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  color: #ff0055;
+}
+
+.hero {
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-overlay {
+  background: rgba(0,0,0,0.6);
+  padding: 40px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+}
+
+.section {
+  padding: 100px 10%;
+  text-align: center;
+}
+
+.dark {
+  background: #1a1a1a;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #1a1a1a;
+  padding: 25px;
+  border-radius: 10px;
+  width: 260px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 15px;
+  background: #ff0055;
+  color: white;
+}
+
+.btn:hover {
+  background: #ff3377;
+}
+
+iframe {
+  width: 80%;
+  height: 450px;
+  border-radius: 10px;
+}
+
+footer {
+  padding: 30px;
+  text-align: center;
+  background: black;
+}
+
+.admin-link {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ff0055;
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-size: 14px;
+}
+</style>
 </head>
+
 <body>
 
 <!-- NAVBAR -->
@@ -21,58 +145,68 @@
   </ul>
 </nav>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <header class="hero">
-  <div class="overlay">
-    <h1>Feel The Beat.</h1>
-    <p>Official Website of DJ VNY — Remixes | Mashups | Party Anthems</p>
-    <div class="hero-buttons">
-      <a href="https://youtube.com/@DJ_VNY?sub_confirmation=1" target="_blank" class="btn primary">Subscribe</a>
-      <a href="#downloads" class="btn secondary">Download MP3</a>
-    </div>
+  <div class="hero-overlay">
+    <h1>Feel The Beat</h1>
+    <p>Official Website of DJ VNY — Remixes | Mashups | Party Tracks</p>
+    <a href="#downloads" class="btn">Download Latest Tracks</a>
   </div>
 </header>
 
-<!-- ABOUT SECTION -->
+<!-- ABOUT -->
 <section id="about" class="section">
   <h2>About DJ VNY</h2>
-  <p>
-DJ VNY is an emerging remix artist known for high-energy mashups and party mixes.
-With growing listeners across YouTube and Spotify, DJ VNY delivers electrifying beats,
-creative remixes, and club-ready tracks designed to move the crowd.
+  <p id="about-text">
+    Loading artist bio...
   </p>
 </section>
 
-<!-- MUSIC SECTION -->
+<!-- MUSIC -->
 <section id="music" class="section dark">
-  <h2>Discography</h2>
-  <div class="video-container">
-    <iframe src="https://youtube.com/playlist?list=PL2QDRjym-NboubyHq2l7FCvAidM2SElli&si=F-su2xr3evrpVZ92"
-    frameborder="0" allowfullscreen></iframe>
-  </div>
+  <h2>Latest Video</h2>
+  <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=DJ_VNY"
+  frameborder="0" allowfullscreen></iframe>
 </section>
 
-<!-- DOWNLOADS SECTION -->
+<!-- DOWNLOADS -->
 <section id="downloads" class="section">
   <h2>MP3 Downloads</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>Remix Track 1</h3>
-      <p>High-energy club remix.</p>
-      <a href="YOUR_MP3_LINK" class="btn primary" download>Download</a>
-    </div>
-    <div class="card">
-      <h3>Mashup Track 2</h3>
-      <p>Trending mashup mix.</p>
-      <a href="YOUR_MP3_LINK" class="btn primary" download>Download</a>
-    </div>
-  </div>
+  <div class="cards" id="track-container"></div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>© 2026 DJ VNY. All Rights Reserved.</p>
 </footer>
+
+<!-- Floating Admin Button -->
+<a href="admin.html" class="admin-link">Admin</a>
+
+<!-- SCRIPT TO LOAD DATA FROM ADMIN PANEL -->
+<script>
+const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+const container = document.getElementById("track-container");
+
+if (tracks.length === 0) {
+  container.innerHTML = "<p>No tracks added yet.</p>";
+} else {
+  tracks.forEach(track => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${track.title}</h3>
+      <p>${track.description}</p>
+      <a href="${track.mp3}" class="btn" download>Download</a>
+    `;
+    container.appendChild(card);
+  });
+}
+
+const bio = localStorage.getItem("bio");
+if (bio) {
+  document.getElementById("about-text").innerText = bio;
+}
+</script>
 
 </body>
 </html>
