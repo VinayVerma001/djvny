@@ -2,206 +2,96 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DJ VNY Control Panel</title>
+<title>DJ VNY Track Manager</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
-  margin:0;
-  font-family:'Poppins', sans-serif;
-  background:#0f0f0f;
-  color:white;
-}
-
-.sidebar {
-  width:220px;
+  font-family:Poppins;
   background:#111;
-  position:fixed;
-  height:100%;
-  padding-top:30px;
-}
-
-.sidebar h2 {
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.sidebar button {
-  width:100%;
-  background:none;
-  border:none;
   color:white;
-  padding:15px;
-  text-align:left;
-  cursor:pointer;
-}
-
-.sidebar button:hover {
-  background:#1a1a1a;
-}
-
-.main {
-  margin-left:240px;
   padding:40px;
 }
 
-.section {
-  display:none;
-}
-
-.section.active {
-  display:block;
-}
-
-input, textarea {
+input, button {
   width:100%;
-  padding:10px;
   margin:8px 0;
-  background:#111;
-  border:1px solid #333;
-  color:white;
-  border-radius:5px;
+  padding:10px;
 }
 
-button.action {
+button {
   background:#ff0055;
-  border:none;
-  padding:10px 15px;
   color:white;
+  border:none;
   cursor:pointer;
-  border-radius:5px;
-  margin-top:10px;
 }
 
 .track-item {
-  background:#111;
+  background:#1a1a1a;
   padding:10px;
   margin-top:10px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-radius:5px;
-}
-
-img.preview {
-  width:120px;
-  border-radius:5px;
-  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-  <h2>DJ VNY</h2>
-  <button onclick="showSection('settings')">Website Settings</button>
-  <button onclick="showSection('tracks')">Manage Tracks</button>
-</div>
+<h2>DJ VNY Track Manager</h2>
 
-<div class="main">
+<input type="password" id="password" placeholder="Admin Password">
+<button onclick="login()">Login</button>
 
-<!-- WEBSITE SETTINGS -->
-<div id="settings" class="section active">
-  <h2>Website Settings</h2>
+<div id="panel" style="display:none">
 
-  <input id="logo" placeholder="Logo Text">
-  <input id="heroTitle" placeholder="Hero Title">
-  <input id="heroSubtitle" placeholder="Hero Subtitle">
-  <input id="heroImage" placeholder="Hero Background Image URL">
-  <input id="primaryColor" placeholder="Primary Color (e.g. #ff0055)">
-  <input id="youtube" placeholder="YouTube Link">
-  <input id="spotify" placeholder="Spotify Link">
-  <textarea id="about" placeholder="About Text"></textarea>
-  <input id="footer" placeholder="Footer Text">
+<h3>Add New Track</h3>
+<input id="trackTitle" placeholder="Track Title">
+<input id="mp3Link" placeholder="MP3 Download Link">
+<input id="thumbFile" placeholder="Thumbnail file name (example: song1.jpg)">
+<button onclick="addTrack()">Add Track</button>
 
-  <button class="action" onclick="saveSettings()">Save Settings</button>
-</div>
+<hr>
 
-<!-- TRACKS SECTION -->
-<div id="tracks" class="section">
-  <h2>Add New Track</h2>
-
-  <input id="trackTitle" placeholder="Track Title">
-  <input id="mp3Link" placeholder="MP3 Download Link">
-  <input type="file" id="imageUpload">
-  <button class="action" onclick="uploadAndSave()">Upload Thumbnail & Save</button>
-
-  <div id="imagePreview"></div>
-
-  <hr style="margin:40px 0; border-color:#333;">
-
-  <h2>Existing Tracks</h2>
-  <div id="trackList"></div>
-</div>
+<h3>Manage Tracks</h3>
+<div id="trackList"></div>
 
 </div>
 
 <script>
-const API_KEY = "PASTE_YOUR_IMGBB_API_KEY_HERE";
+const PASSWORD = "djvny123";
 
-function showSection(id){
-  document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+function login(){
+  if(document.getElementById("password").value === PASSWORD){
+    document.getElementById("panel").style.display="block";
+    loadTracks();
+  } else alert("Wrong Password");
 }
 
-function saveSettings(){
-  const settings = {
-    logo: logo.value,
-    heroTitle: heroTitle.value,
-    heroSubtitle: heroSubtitle.value,
-    heroImage: heroImage.value,
-    primaryColor: primaryColor.value,
-    youtube: youtube.value,
-    spotify: spotify.value,
-    about: about.value,
-    footer: footer.value
-  };
-  localStorage.setItem("siteSettings", JSON.stringify(settings));
-  alert("Settings Updated!");
-}
-
-async function uploadAndSave(){
-  const file = document.getElementById("imageUpload").files[0];
-  if(!file) return alert("Select image");
-
-  const formData = new FormData();
-  formData.append("image", file);
-
-  const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
-    method: "POST",
-    body: formData
-  });
-
-  const data = await res.json();
-  const imageUrl = data.data.url;
-
-  document.getElementById("imagePreview").innerHTML =
-    `<img src="${imageUrl}" class="preview">`;
-
-  saveTrack(imageUrl);
-}
-
-function saveTrack(thumbnail){
+function addTrack(){
   const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 
   tracks.push({
     title: trackTitle.value,
-    thumbnail: thumbnail,
+    thumbnail: "thumbnails/" + thumbFile.value.trim(),
     mp3: mp3Link.value
   });
 
   localStorage.setItem("tracks", JSON.stringify(tracks));
+
+  trackTitle.value="";
+  mp3Link.value="";
+  thumbFile.value="";
+
   loadTracks();
-  alert("Track Added!");
 }
 
 function loadTracks(){
   const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
   const list = document.getElementById("trackList");
-  list.innerHTML = "";
+  list.innerHTML="";
 
   tracks.forEach((track,index)=>{
     const div = document.createElement("div");
@@ -220,8 +110,6 @@ function deleteTrack(index){
   localStorage.setItem("tracks", JSON.stringify(tracks));
   loadTracks();
 }
-
-loadTracks();
 </script>
 
 </body>
