@@ -1,81 +1,39 @@
-/* =========================
-   ROOT VARIABLES (Dynamic)
-========================= */
-
 :root {
   --primary: #ff0055;
-  --bg-dark: #0f0f0f;
-  --card-dark: #1a1a1a;
-  --text-light: #ffffff;
 }
-
-/* =========================
-   GLOBAL
-========================= */
 
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: var(--bg-dark);
-  color: var(--text-light);
-  scroll-behavior: smooth;
+  background: #0f0f0f;
+  color: white;
 }
-
-h1, h2, h3 {
-  margin: 0 0 15px;
-}
-
-.section {
-  padding: 100px 10%;
-  text-align: center;
-}
-
-/* =========================
-   NAVBAR
-========================= */
 
 .navbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 20px 8%;
+  background: black;
   position: fixed;
   width: 100%;
-  top: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.logo {
-  font-weight: 700;
-  font-size: 22px;
-  letter-spacing: 2px;
 }
 
 .navbar ul {
   list-style: none;
   display: flex;
   gap: 25px;
-  margin: 0;
-  padding: 0;
 }
 
 .navbar a {
-  color: var(--text-light);
+  color: white;
   text-decoration: none;
-  font-weight: 500;
-  transition: 0.3s ease;
 }
 
-.navbar a:hover {
-  color: var(--primary);
+.logo {
+  font-weight: 700;
+  font-size: 22px;
 }
-
-/* =========================
-   HERO SECTION
-========================= */
 
 .hero {
   height: 100vh;
@@ -84,122 +42,59 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   text-align: center;
-  position: relative;
 }
 
 .hero-overlay {
-  background: rgba(0, 0, 0, 0.65);
-  padding: 60px;
-  border-radius: 15px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.65);
+  padding: 50px;
+  border-radius: 12px;
 }
 
-.hero h1 {
-  font-size: 3rem;
-  letter-spacing: 3px;
+.section {
+  padding: 100px 10%;
+  text-align: center;
 }
-
-.hero p {
-  font-size: 1.2rem;
-  opacity: 0.8;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.btn {
-  display: inline-block;
-  padding: 12px 25px;
-  border-radius: 6px;
-  text-decoration: none;
-  background: var(--primary);
-  color: white;
-  font-weight: 500;
-  transition: 0.3s ease;
-  margin-top: 10px;
-}
-
-.btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(255, 0, 85, 0.4);
-}
-
-/* =========================
-   TRACK CARDS
-========================= */
 
 .cards {
   display: flex;
   justify-content: center;
-  gap: 35px;
+  gap: 30px;
   flex-wrap: wrap;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .card {
-  background: var(--card-dark);
-  border-radius: 15px;
-  width: 300px;
+  background: #1a1a1a;
   padding: 20px;
+  border-radius: 12px;
+  width: 300px;
   text-align: center;
-  transition: 0.3s ease;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  transition: 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);
+  transform: translateY(-8px);
 }
 
 .thumb {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16/9;
   object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
 }
 
-.card h3 {
-  font-size: 16px;
-  margin: 10px 0;
+.btn {
+  background: var(--primary);
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
 }
-
-/* =========================
-   FOOTER
-========================= */
 
 footer {
-  padding: 40px 10%;
+  padding: 40px;
   text-align: center;
-  background: #000;
-  font-size: 14px;
-  opacity: 0.7;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 900px) {
-
-  .navbar ul {
-    gap: 15px;
-  }
-
-  .hero h1 {
-    font-size: 2.2rem;
-  }
-
-  .hero-overlay {
-    padding: 30px;
-  }
-
-  .cards {
-    flex-direction: column;
-    align-items: center;
-  }
-
+  background: black;
 }
