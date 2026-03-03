@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DJ VNY Admin Panel</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -15,13 +15,13 @@ body {
   color: white;
 }
 
-.login-box, .admin-panel {
+.container {
   max-width: 800px;
-  margin: 80px auto;
+  margin: 60px auto;
   background: #1a1a1a;
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 0 30px rgba(255,0,85,0.2);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(255,0,85,0.2);
 }
 
 h1, h2 {
@@ -35,28 +35,28 @@ input, textarea {
   background: #111;
   border: 1px solid #333;
   color: white;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 button {
   padding: 10px 20px;
+  background: linear-gradient(90deg,#ff0055,#9900ff);
   border: none;
-  background: #ff0055;
   color: white;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
 }
 
 button:hover {
-  background: #ff3377;
+  opacity: 0.9;
 }
 
 .track-item {
   background: #111;
   padding: 15px;
-  margin: 15px 0;
-  border-radius: 5px;
+  margin-top: 15px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -74,33 +74,33 @@ button:hover {
 
 <body>
 
-<!-- LOGIN -->
-<div class="login-box" id="loginBox">
+<div class="container" id="loginBox">
   <h1>DJ VNY Admin Login</h1>
   <input type="password" id="password" placeholder="Enter Admin Password">
   <button onclick="login()">Login</button>
 </div>
 
-<!-- ADMIN PANEL -->
-<div class="admin-panel hidden" id="adminPanel">
+<div class="container hidden" id="adminPanel">
+
   <h1>Admin Dashboard</h1>
 
   <h2>Artist Bio</h2>
   <textarea id="bioText" rows="4"></textarea>
   <button onclick="saveBio()">Save Bio</button>
 
-  <hr>
+  <hr style="margin:40px 0; border-color:#333;">
 
   <h2>Add New Track</h2>
   <input type="text" id="trackTitle" placeholder="Track Title">
-  <input type="text" id="trackDesc" placeholder="Track Description">
-  <input type="text" id="trackLink" placeholder="MP3 Download Link">
+  <input type="text" id="youtubeLink" placeholder="YouTube Video Link">
+  <input type="text" id="mp3Link" placeholder="MP3 Download Link">
   <button onclick="addTrack()">Add Track</button>
 
-  <hr>
+  <hr style="margin:40px 0; border-color:#333;">
 
   <h2>Manage Tracks</h2>
   <div id="trackList"></div>
+
 </div>
 
 <script>
@@ -130,8 +130,7 @@ function loadData() {
     div.className = "track-item";
     div.innerHTML = `
       <div>
-        <strong>${track.title}</strong><br>
-        ${track.description}
+        <strong>${track.title}</strong>
       </div>
       <button class="delete-btn" onclick="deleteTrack(${index})">Delete</button>
     `;
@@ -145,25 +144,47 @@ function saveBio() {
   alert("Bio Updated!");
 }
 
+function extractVideoID(url) {
+  const regExp = /(?:youtube\.com\/.*v=|youtu\.be\/)([^&\n?#]+)/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+}
+
 function addTrack() {
   const title = document.getElementById("trackTitle").value;
-  const desc = document.getElementById("trackDesc").value;
-  const link = document.getElementById("trackLink").value;
+  const youtubeLink = document.getElementById("youtubeLink").value;
+  const mp3 = document.getElementById("mp3Link").value;
 
-  if (!title || !link) {
-    alert("Title and Link required");
+  if (!title || !youtubeLink || !mp3) {
+    alert("All fields are required");
     return;
   }
 
+  const videoId = extractVideoID(youtubeLink);
+
+  if (!videoId) {
+    alert("Invalid YouTube Link");
+    return;
+  }
+
+  const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
   const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-  tracks.push({ title: title, description: desc, mp3: link });
+
+  tracks.push({
+    title: title,
+    thumbnail: thumbnail,
+    mp3: mp3
+  });
+
   localStorage.setItem("tracks", JSON.stringify(tracks));
 
   document.getElementById("trackTitle").value = "";
-  document.getElementById("trackDesc").value = "";
-  document.getElementById("trackLink").value = "";
+  document.getElementById("youtubeLink").value = "";
+  document.getElementById("mp3Link").value = "";
 
   loadData();
+  alert("Track Added Successfully!");
 }
 
 function deleteTrack(index) {
