@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pageTitle">DJ VNY</title>
+<title>DJ VNY | Official Website</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -12,76 +12,59 @@
 <body>
 
 <nav class="navbar">
-  <div class="logo" id="logoText">DJ VNY</div>
+  <div class="logo">DJ VNY</div>
   <ul>
     <li><a href="#about">About</a></li>
-    <li><a href="#music">Music</a></li>
-    <li><a href="#downloads">Downloads</a></li>
-    <li><a id="youtubeLink" target="_blank">YouTube</a></li>
-    <li><a id="spotifyLink" target="_blank">Spotify</a></li>
+    <li><a href="#downloads">Tracks</a></li>
+    <li><a href="https://youtube.com/@DJ_VNY?sub_confirmation=1" target="_blank">YouTube</a></li>
+    <li><a href="https://open.spotify.com/artist/4BdYeDNwFbmtB4uXeJmRw1" target="_blank">Spotify</a></li>
   </ul>
 </nav>
 
-<header class="hero" id="heroSection">
+<header class="hero">
   <div class="hero-overlay">
-    <h1 id="heroTitle">Feel The Beat</h1>
-    <p id="heroSubtitle">Official Website</p>
+    <h1>Feel The Beat</h1>
+    <p>Official Website of DJ VNY</p>
   </div>
 </header>
 
 <section id="about" class="section">
-  <h2>About</h2>
-  <p id="aboutText"></p>
+  <h2>About DJ VNY</h2>
+  <p>
+    DJ VNY is a passionate remix artist delivering high-energy mashups,
+    party edits, and electrifying DJ tracks for music lovers worldwide.
+  </p>
 </section>
 
 <section id="downloads" class="section">
-  <h2>Tracks</h2>
+  <h2>Latest Tracks</h2>
   <div class="cards" id="trackContainer"></div>
 </section>
 
 <footer>
-  <p id="footerText"></p>
+  <p>© 2026 DJ VNY. All Rights Reserved.</p>
 </footer>
 
 <script>
-const settings = JSON.parse(localStorage.getItem("siteSettings")) || {};
 const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-
-// Apply Settings
-document.getElementById("logoText").innerText = settings.logo || "DJ VNY";
-document.getElementById("pageTitle").innerText = settings.logo || "DJ VNY";
-
-document.getElementById("heroTitle").innerText = settings.heroTitle || "Feel The Beat";
-document.getElementById("heroSubtitle").innerText = settings.heroSubtitle || "";
-document.getElementById("aboutText").innerText = settings.about || "";
-document.getElementById("footerText").innerText = settings.footer || "";
-
-if(settings.youtube)
-  document.getElementById("youtubeLink").href = settings.youtube;
-
-if(settings.spotify)
-  document.getElementById("spotifyLink").href = settings.spotify;
-
-if(settings.heroImage)
-  document.getElementById("heroSection").style.background =
-    `url('${settings.heroImage}') center/cover no-repeat`;
-
-if(settings.primaryColor)
-  document.documentElement.style.setProperty('--primary', settings.primaryColor);
-
-// Load Tracks
 const container = document.getElementById("trackContainer");
 
-tracks.forEach(track => {
-  const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = `
-    <img src="${track.thumbnail}" class="thumb">
-    <h3>${track.title}</h3>
-    <a href="${track.mp3}" class="btn" download>Download</a>
-  `;
-  container.appendChild(card);
-});
+if(tracks.length === 0){
+  container.innerHTML = "<p>No tracks uploaded yet.</p>";
+} else {
+  tracks.forEach(track => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${track.thumbnail}" class="thumb">
+      <h3>${track.title}</h3>
+      <a href="${track.mp3}" class="btn" download>Download</a>
+    `;
+
+    container.appendChild(card);
+  });
+}
 </script>
 
 </body>
